@@ -51,6 +51,7 @@ public class GameController {
         oldGame.setAgeRating(updateGame.getAgeRating());
         oldGame.setNumberOfPlayers(updateGame.getNumberOfPlayers());
         oldGame.setIsEarlyAccess(updateGame.getIsEarlyAccess());
+        oldGame.setBorrows(updateGame.getBorrows());
 
         return ResponseEntity.ok(this.repository.save(oldGame));
     }

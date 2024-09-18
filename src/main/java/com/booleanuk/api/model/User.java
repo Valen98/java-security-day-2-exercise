@@ -1,7 +1,9 @@
 package com.booleanuk.api.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -48,14 +50,21 @@ public class User {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @Column
     @OneToMany(mappedBy = "user")
-    @JsonIgnoreProperties("user")
-    private List<Game> games;
+    private List<Borrow> borrows;
+
 
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public void addGameToBorrow(Borrow borrow) {
+        this.borrows.add(borrow);
+    }
+
+    public void returnGameFromBorrow(Borrow borrow) {
+        this.borrows.remove(borrow);
     }
 }

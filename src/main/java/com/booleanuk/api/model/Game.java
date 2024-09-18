@@ -1,11 +1,15 @@
 package com.booleanuk.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -43,11 +47,9 @@ public class Game {
     @Column(name = "earlyAccess")
     private Boolean isEarlyAccess;
 
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @JsonIncludeProperties(value = {"username"})
-    private User user;
+    @OneToMany(mappedBy = "game")
+    @JsonIgnore
+    private List<Borrow> borrows;
 
 
     public Game(String title, String genre, String publisher, String developer, Integer releaseYear, Integer ageRating, Integer numberOfPlayers, Boolean isEarlyAccess) {
@@ -59,5 +61,13 @@ public class Game {
         this.ageRating = ageRating;
         this.numberOfPlayers = numberOfPlayers;
         this.isEarlyAccess = isEarlyAccess;
+    }
+
+    public void addGameToBorrow(Borrow borrow) {
+        this.borrows.add(borrow);
+    }
+
+    public void returnGameFromBorrow(Borrow borrow) {
+        this.borrows.remove(borrow);
     }
 }

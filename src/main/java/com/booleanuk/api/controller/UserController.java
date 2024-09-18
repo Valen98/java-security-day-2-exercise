@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -50,26 +49,10 @@ public class UserController {
         oldUser.setEmail(updateUser.getEmail());
         oldUser.setPassword(updateUser.getPassword());
         oldUser.setRoles(updateUser.getRoles());
-        oldUser.setGames(oldUser.getGames());
+        oldUser.setBorrows(oldUser.getBorrows());
         this.repository.save(oldUser);
         return ResponseEntity.ok(oldUser);
     }
 
-    @PostMapping("{userId}/games/{gameId}")
-    public ResponseEntity<?> borrowGame(@PathVariable(name = "userId") Integer userId, @PathVariable(name = "gameId") Integer gameId) {
-        User user = this.repository.findById(userId).orElse(null);
-        Game game = this.gameRepository.findById(gameId).orElse(null);
 
-        if(game == null || user == null){
-            return ResponseEntity.badRequest().body(user);
-        }
-
-        List<Game> gameList = user.getGames();
-        gameList.add(game);
-        user.setGames(gameList);
-        game.setUser(user);
-
-        return ResponseEntity.ok(this.repository.save(user));
-
-    }
 }

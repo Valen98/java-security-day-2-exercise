@@ -65,6 +65,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/games", "/games/**").hasAuthority(ERole.ROLE_ADMIN.toString())
                         .requestMatchers(HttpMethod.GET, "/users", "/users/**").hasAuthority(ERole.ROLE_ADMIN.toString())
                         .requestMatchers(HttpMethod.POST, "/users", "/users/**").hasAuthority(ERole.ROLE_ADMIN.toString())
+                        .requestMatchers("/borrows", "/borrows/**").authenticated()
                 );
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
